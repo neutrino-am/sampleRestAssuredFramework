@@ -49,6 +49,32 @@ public class VerifySatellitePositions {
     }
 
     @Test
+    public void getPositionResponseHeaderWithKilometers() { // to verify a kilometers is default response
+        Response response = RequestBuilder
+                .buildRequestForGetCalls()
+                .pathParam("id",25544 )
+                .get("/satellites/{id}/positions?timestamps=1644184742");
+        response.prettyPrint();
+
+        assertThat(response.jsonPath().getString("units"))
+                .as("Verify the units")
+                .isEqualTo("kilometers");
+    }
+
+    @Test
+    public void getPositionResponseHeaderWithMiles() { // to verify a units can be changes to miles in Query parameters
+        Response response = RequestBuilder
+                .buildRequestForGetCalls()
+                .pathParam("id",25544 )
+                .get("/satellites/{id}/positions?timestamps=1644184742&units=miles");
+        response.prettyPrint();
+
+        assertThat(response.jsonPath().getString("units"))
+                .as("Verify the units")
+                .isEqualTo("miles");
+    }
+
+    @Test
     public void getPositionResponseSize() { // to verify we are getting response for each timestamp
 
         Response response = RequestBuilder
